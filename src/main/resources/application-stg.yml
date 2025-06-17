@@ -41,13 +41,6 @@ spring:
       properties:
         spring.json.trusted.packages: "*"
 
-neis:
-  url: https://open.neis.go.kr/hub/schoolInfo
-  api-key: fb9d21c2f3b842bcbff0503e1ebeea63
-
-APP:
-  API-KEY: 7f0c6616ae9d4eff4f6a9d3cc4c473bc
-
 TIMEZONE:
   OFFSET: 9
 

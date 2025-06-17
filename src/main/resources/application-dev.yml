@@ -38,20 +38,6 @@ spring:
       properties:
         spring.json.trusted.packages: "*"
       auto-offset-reset: latest
-    #producer:
-      #transactional-id-prefix: tx-mono- #트랜잭션 ID prefix
-#    consumer:
-#      enable-auto-commit: false  # 오토 커밋 금지
-#      auto-offset-reset: earliest
-#    listener:
-#      ack-mode: MANUAL  # 수동 ack
-
-neis:
-  url: https://open.neis.go.kr/hub/schoolInfo
-  api-key: fb9d21c2f3b842bcbff0503e1ebeea63
-
-APP:
-  API-KEY: 7f0c6616ae9d4eff4f6a9d3cc4c473bc
 
 TIMEZONE:
   OFFSET: 9
