@@ -48,12 +48,6 @@ spring:
       ack-mode: MANUAL  # 수동 ack
   scheduling:
     enabled: false
-neis:
-  url: https://open.neis.go.kr/hub/schoolInfo
-  api-key: fb9d21c2f3b842bcbff0503e1ebeea63
-
-APP:
-  API-KEY: 7f0c6616ae9d4eff4f6a9d3cc4c473bc
 
 ELASTIC_SEARCH:
   IP: 192.168.0.17:9200
