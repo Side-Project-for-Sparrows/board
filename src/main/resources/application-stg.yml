@@ -1,0 +1,101 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://postgresql:5432/mydb  # 서비스 이름으로 접근
+    username: myuser
+    password: mypw
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+
+  data:
+    mongodb:
+      uri: mongodb://admin:password@mongodb:27017/admin  # 서비스 이름 기반 접근
+    redis:
+      host: redis  # 내부 서비스 이름
+      port: 6379
+    elasticsearch:
+      uri: http://elasticsearch:9200  # ES도 서비스명 기반
+  task:
+    scheduling:
+      pool:
+        size: 5
+  batch:
+    jdbc:
+      initialize-schema: always
+    job:
+      enabled: false
+
+  kafka:
+    bootstrap-servers: kafka:9092  # 내부 서비스명 기준
+    admin:
+      auto-create: true
+    consumer:
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+
+neis:
+  url: https://open.neis.go.kr/hub/schoolInfo
+  api-key: fb9d21c2f3b842bcbff0503e1ebeea63
+
+APP:
+  API-KEY: 7f0c6616ae9d4eff4f6a9d3cc4c473bc
+
+TIMEZONE:
+  OFFSET: 9
+
+search:
+  service:
+    url: http://search-service:8080  # 내부 서비스 접근 방식
+
+kafka:
+  aggregateType:
+    user: "user"
+    post: "post"
+    board: "board"
+    school: "school"
+
+  topic:
+    user:
+      create: "user-create-event"
+      update: "user-update-event"
+      delete: "user-delete-event"
+    post:
+      create: "post-create-event"
+      update: "post-update-event"
+      delete: "post-delete-event"
+    board:
+      create: "board-create-event"
+      update: "board-update-event"
+      delete: "board-delete-event"
+    school:
+      create: "school-create-event"
+      update: "school-update-event"
+      delete: "school-delete-event"
+
+  groupId:
+    board: "board-group-stg"
+    school: "school-group-stg"
+    search: "search-group-stg"
+
+logging:
+  level:
+    org.apache.kafka: WARN
+    org.apache.kafka.clients.consumer: WARN
+    org.apache.kafka.clients.producer: WARN
+    org.springframework.kafka: WARN
+
+cache:
+  ttl:
+    default-ttl: 5m
+    domain:
+      calendar:
+        in-memory: 1m
+        redis: 2m
