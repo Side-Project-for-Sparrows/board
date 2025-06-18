@@ -4,14 +4,33 @@
     <!-- 로그 패턴: 날짜, 스레드, 로그 레벨, 클래스명, 메시지 -->
     <property name="STDOUT_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>
 
-    <!-- 콘솔 출력용 appender -->
-    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder class="net.logstash.logback.encoder.LogstashEncoder" />
-    </appender>
-
     <!-- 모든 로그는 콘솔로만 출력 -->
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>
     </root>
+
+    <!-- dev 환경: 로그 예쁘게 -->
+    <springProfile name="dev">
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>${STDOUT_PATTERN}</pattern>
+            </encoder>
+        </appender>
+
+        <root level="DEBUG">
+            <appender-ref ref="CONSOLE" />
+        </root>
+    </springProfile>
+
+    <!-- stg/prod 환경: JSON 로그 -->
+    <springProfile name="stg,prd">
+        <appender name="CONSOLE_JSON" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
+        </appender>
+
+        <root level="INFO">
+            <appender-ref ref="CONSOLE_JSON" />
+        </root>
+    </springProfile>
 
 </configuration>
