@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://postgres:5432/mydb  # 서비스 이름으로 접근
-    username: myuser
-    password: mypw
+    url: jdbc:postgresql://${DB_HOST}:5432/${POSTGRES_DB}  # 서비스 이름으로 접근
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
     driver-class-name: org.postgresql.Driver
 
   jpa:
