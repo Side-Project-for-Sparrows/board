@@ -10,6 +10,8 @@ import java.util.List;
 @NoArgsConstructor
 public class PostDetailDto {
     Long postId;
+    Integer boardId;
+    Long writer;
     String title;
     String content;
     Integer likes;
@@ -20,6 +22,8 @@ public class PostDetailDto {
 
     public PostDetailDto (PostEntity entity){
         this.postId = entity.getId();
+        this.boardId = entity.getBoardId();
+        this.writer = entity.getUserId();
         this.title = entity.getTitle();
         this.content = entity.getContent();
         this.commentDetailDtos = CommentDetailDto.from(entity.getComments());
