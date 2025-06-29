@@ -38,7 +38,7 @@ public class BoardUsecaseImpl implements BoardUsecase {
             if(!boardUserPort.existsByUserIdAndSchoolId(userId, boardEntity.getSchoolId()))
                 throw new FailUserNotFoundException();
 
-            boardEntity.setSchoolId(null);
+            //boardEntity.setSchoolId(null);
             if(!boardEntity.getIsPublic()) boardEntity.updateEnterCode();
         }
 

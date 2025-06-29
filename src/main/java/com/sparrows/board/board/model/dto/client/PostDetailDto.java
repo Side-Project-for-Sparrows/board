@@ -4,6 +4,8 @@ import com.sparrows.board.board.model.entity.PostEntity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -11,7 +13,8 @@ import java.util.List;
 public class PostDetailDto {
     Long postId;
     Integer boardId;
-    Long writer;
+    Long writerId;
+    String nickname;
     String title;
     String content;
     Integer likes;
@@ -19,11 +22,13 @@ public class PostDetailDto {
     List<CommentDetailDto> commentDetailDtos;
     List<LikeDetailDto> likeDetailDtos;
     List<PostImageDetailDto> postImageDetailDtos;
+    LocalDateTime createdAt;
 
-    public PostDetailDto (PostEntity entity){
+    public PostDetailDto (PostEntity entity, String nickname){
         this.postId = entity.getId();
         this.boardId = entity.getBoardId();
-        this.writer = entity.getUserId();
+        this.writerId = entity.getUserId();
+        this.nickname = nickname;
         this.title = entity.getTitle();
         this.content = entity.getContent();
         this.commentDetailDtos = CommentDetailDto.from(entity.getComments());
@@ -31,5 +36,6 @@ public class PostDetailDto {
         this.postImageDetailDtos = PostImageDetailDto.from(entity.getPostImageEntities());
         this.likes = entity.getLikeCount();
         this.views = entity.getViewCount();
+        this.createdAt = entity.getCreatedAt();
     }
 }

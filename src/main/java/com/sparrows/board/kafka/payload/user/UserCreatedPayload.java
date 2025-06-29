@@ -8,5 +8,6 @@ import lombok.Data;
 public class UserCreatedPayload{
     public long userId;
     public int schoolId;
+    public String nickname;
     public UserType userType;
 }

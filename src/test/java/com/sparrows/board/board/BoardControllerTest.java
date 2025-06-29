@@ -69,9 +69,9 @@ class BoardControllerTest {
     }
     @BeforeEach
     void setUp() {
-        boardUserPort.save(user1, schoolId);
-        boardUserPort.save(user2, schoolId);
-        boardUserPort.save(user3, schoolId);
+        boardUserPort.save(user1, "user1", schoolId);
+        boardUserPort.save(user2,"user2", schoolId);
+        boardUserPort.save(user3, "user3",schoolId);
     }
 
     @Test
