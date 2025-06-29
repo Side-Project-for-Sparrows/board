@@ -39,6 +39,6 @@ public class UserEventListener {
     }
 
     private void handleUserCreated(UserCreatedPayload payload) {
-        userBoardUsecase.handleUserCreated(payload.getUserId(), payload.getSchoolId(), payload.getUserType());
+        userBoardUsecase.handleUserCreated(payload.getUserId(),payload.getNickname(), payload.getSchoolId(), payload.getUserType());
     }
 }

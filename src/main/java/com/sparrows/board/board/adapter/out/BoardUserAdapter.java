@@ -12,11 +12,17 @@ public class BoardUserAdapter implements BoardUserPort {
     BoardUserRepository boardUserRepository;
 
     @Override
-    public void save(Long userId, Integer schoolId) {
+    public void save(Long userId, String nickname, Integer schoolId) {
         BoardUserEntity entity = new BoardUserEntity();
         entity.setId(userId);
+        entity.setNickname(nickname);
         entity.setSchoolId(schoolId);
         boardUserRepository.save(entity);
+    }
+
+    @Override
+    public BoardUserEntity findById(Long userId) {
+        return boardUserRepository.findById(userId).orElseThrow();
     }
 
     @Override

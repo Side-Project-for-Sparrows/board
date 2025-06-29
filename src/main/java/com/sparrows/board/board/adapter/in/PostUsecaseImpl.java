@@ -34,6 +34,7 @@ public class PostUsecaseImpl implements PostUsecase {
     private final PostSearchPort postSearchPort;
     private final PostEventPort postEventPort;
     private final UserBoardRelationPort userBoardRelationPort;
+    private final BoardUserPort boardUserPort;
 
 
     @Transactional
@@ -131,6 +132,7 @@ public class PostUsecaseImpl implements PostUsecase {
     @Transactional
     public PostDetailDto getPostDetail(Long postId) {
         PostEntity postEntity = postPort.findById(postId).orElseThrow(PostNotFouncException::new);
-        return new PostDetailDto(postEntity);
+        String nickname = boardUserPort.findById(postEntity.getUserId()).getNickname();
+        return new PostDetailDto(postEntity,nickname);
     }
 }

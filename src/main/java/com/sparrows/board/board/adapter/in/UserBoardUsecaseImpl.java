@@ -30,8 +30,8 @@ public class UserBoardUsecaseImpl implements UserBoardUsecase {
 
     @Override
     @Transactional
-    public void handleUserCreated(Long userId, Integer schoolId, UserType userType) {
-        boardUserPort.save(userId, schoolId);
+    public void handleUserCreated(Long userId, String nickname, Integer schoolId, UserType userType) {
+        boardUserPort.save(userId, nickname, schoolId);
         addInitializeUserBoardRelation(userId, schoolId, userType);
     }
 

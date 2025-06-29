@@ -20,5 +20,8 @@ public class BoardUserEntity {
     private Long id;
 
     @Column(nullable = false)
+    private String nickname;
+
+    @Column(nullable = false)
     private Integer schoolId;
 }
