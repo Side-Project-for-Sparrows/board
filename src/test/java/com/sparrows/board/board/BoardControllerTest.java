@@ -1,6 +1,7 @@
 package com.sparrows.board.board;
 
-import com.sparrows.board.board.exception.handling.BoardNotFouncException;
+import com.sparrows.board.board.port.in.LikeUsecase;
+import com.sparrows.board.exception.handling.BoardNotFouncException;
 import com.sparrows.board.board.model.dto.client.BoardCreateResponseDto;
 import com.sparrows.board.board.model.dto.client.BoardJoinResponseDto;
 import com.sparrows.board.board.model.dto.client.BoardWithdrawResponseDto;
@@ -37,6 +38,9 @@ class BoardControllerTest {
 
     @Autowired
     private BoardUsecase boardUsecase;
+
+    @Autowired
+    private LikeUsecase likeUsecase;
 
     @Autowired
     private BoardPort boardPort;
@@ -141,10 +145,10 @@ class BoardControllerTest {
         assertEquals("유저1의 글", detail.getTitle());
 
         // 9. 유저2가 유저1 글에 좋아요 (되긴 해야 함. 탈퇴와 무관)
-        assertTrue(postUsecase.likePost(post1.getId(), user2));
+        assertTrue(likeUsecase.likePost(post1.getId(), user2));
 
         // 10. 유저2가 다시 좋아요 (취소됨)
-        assertTrue(postUsecase.likePost(post1.getId(), user2));
+        assertTrue(likeUsecase.likePost(post1.getId(), user2));
     }
 }
 

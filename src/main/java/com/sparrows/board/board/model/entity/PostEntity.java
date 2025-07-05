@@ -1,6 +1,5 @@
 package com.sparrows.board.board.model.entity;
 
-import com.sparrows.board.common.model.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -31,6 +30,10 @@ public class PostEntity extends BaseEntity {
 
     @Column
     @ColumnDefault("0")
+    private int commentCount;
+
+    @Column
+    @ColumnDefault("0")
     private int viewCount;
 
     @Column(nullable = false)
@@ -46,7 +49,7 @@ public class PostEntity extends BaseEntity {
     private String url; // slug
 
     @Column
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<LikeEntity> likes;
 
     @Column
@@ -74,5 +77,13 @@ public class PostEntity extends BaseEntity {
 
     public void decreaseLike() {
         this.likeCount -= 1;
+    }
+
+    public void increaseComment() {
+        this.commentCount += 1;
+    }
+
+    public void decreaseComment() {
+        this.commentCount -= 1;
     }
 }

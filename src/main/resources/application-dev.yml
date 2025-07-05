@@ -90,3 +90,9 @@ cache:
       calendar:
         in-memory: 1m
         redis: 2m
+
+minio:
+  endpoint: http://192.168.0.17:30900
+  access-key: minioadmin
+  secret-key: minioadmin
+  bucket: post-files

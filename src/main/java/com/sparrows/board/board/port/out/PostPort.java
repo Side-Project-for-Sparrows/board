@@ -12,7 +12,7 @@ public interface PostPort {
 
     List<PostEntity> findAll();
 
-    List<PostEntity> getPostsByBoardId(Long boardId);
+    List<PostEntity> findByBoardId(Long boardId);
 
     Optional<PostEntity> findById(long id);
 

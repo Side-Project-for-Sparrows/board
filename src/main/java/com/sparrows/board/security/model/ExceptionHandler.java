@@ -1,8 +1,8 @@
 package com.sparrows.board.security.model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sparrows.board.common.ErrorCode;
-import com.sparrows.board.common.ErrorResponse;
+import com.sparrows.board.exception.ErrorCode;
+import com.sparrows.board.exception.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.config.Customizer;

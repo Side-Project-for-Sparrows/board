@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 public class PostSearchResponseDto {
     Long userId;
     Integer boardId;
+    Long postId;
     String title;
     String content;
     List<String> imageUrls;
@@ -26,11 +27,12 @@ public class PostSearchResponseDto {
     public static PostSearchResponseDto from(PostEntity post){
         return PostSearchResponseDto.builder()
                 .userId(post.getUserId())
+                .postId(post.getId())
                 .boardId(post.getBoardId())
                 .title(post.getTitle())
                 .content(post.getContent())
                 .imageUrls(post.getPostImageEntities().stream()
-                        .map(PostImageEntity::getUrl)
+                        .map(PostImageEntity::getKey)
                         .collect(Collectors.toList()))
                 .likes(post.getLikeCount())
                 .viewCounts(post.getViewCount())

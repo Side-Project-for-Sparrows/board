@@ -1,16 +1,16 @@
 package com.sparrows.board.board.adapter.in;
 
-import com.sparrows.board.board.exception.handling.BoardNotFouncException;
-import com.sparrows.board.board.exception.handling.PostNotFouncException;
+import com.sparrows.board.board.factory.PostFactory;
 import com.sparrows.board.board.model.dto.client.PostDetailDto;
 import com.sparrows.board.board.model.dto.internal.PostSaveRequest;
 import com.sparrows.board.board.model.dto.internal.PostSearchRequest;
-import com.sparrows.board.board.model.entity.LikeEntity;
 import com.sparrows.board.board.model.entity.PostEntity;
 import com.sparrows.board.board.model.entity.PostImageEntity;
 import com.sparrows.board.board.model.entity.UserBoardRelationEntity;
 import com.sparrows.board.board.port.in.PostUsecase;
 import com.sparrows.board.board.port.out.*;
+import com.sparrows.board.exception.handling.BoardNotFouncException;
+import com.sparrows.board.exception.handling.PostNotFouncException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -29,17 +29,15 @@ import java.util.List;
 @Service
 public class PostUsecaseImpl implements PostUsecase {
     private final PostPort postPort;
-    private final LikePort likePort;
-    private final PostImagePort postImagePort;
+    private final ImagePort imagePort;
     private final PostSearchPort postSearchPort;
     private final PostEventPort postEventPort;
     private final UserBoardRelationPort userBoardRelationPort;
-    private final BoardUserPort boardUserPort;
-
+    private final PostFactory postFactory;
 
     @Transactional
     @Override
-    public boolean savePost(PostEntity post, MultipartFile[] images) throws BoardNotFouncException {
+    public boolean savePost(PostEntity post, MultipartFile[] images) throws Exception {
         //post 저장 시도하려는 유저가 해당 board에 존재하는지 검증 필요
         isValid(post);
 
@@ -47,23 +45,7 @@ public class PostUsecaseImpl implements PostUsecase {
         postPort.save(post);
 
         //post_image 객체 저장
-        int order = 0;
-        try{
-            for(MultipartFile imageFile: images){
-                PostImageEntity image = PostImageEntity.createFromData(post, imageFile, order++);
-
-                postImagePort.save(image);
-
-                Path targetUrl = Paths.get( image.getAbsoluteUrl());
-                File file = new File(String.valueOf(targetUrl));
-                file.getParentFile().mkdirs(); // a/b/c/d 디렉토리 전부 생성
-                imageFile.transferTo(file.toPath());
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-            log.error(e.getMessage());
-            return false;
-        }
+        imagePort.save(post, images);
 
         //post 생성 이벤트 발행
         postEventPort.publishPostCreatedEvent(PostSaveRequest.from(post));
@@ -100,39 +82,14 @@ public class PostUsecaseImpl implements PostUsecase {
 
     @Override
     @Transactional
-    public boolean likePost(Long postId, Long userId) {
-        LikeEntity entity = likePort.findByPostIdAndUserId(postId,userId);
-
-        //이전에 추천한 내역이 없을때는 새로 만들고 끝!
-        if(entity == null){
-            LikeEntity like = new LikeEntity();
-            PostEntity post = new PostEntity();
-            post.setId(postId);
-            like.setPost(post);
-            like.setUserId(userId);
-            post.increaseLike();
-            likePort.save(like);
-            return true;
-        }
-
-        //like는 post 뿐만 아니라 거기 안의 코멘트에도 달 수 있기 때문에 commnet id가 널이어야함
-        //이미 추천했는데 또 추천하면 추천 사라지는것으로 하자.
-        if(entity.getComment() == null){
-            likePort.delete(entity);
-            PostEntity post = postPort.findById(postId).orElseThrow(PostNotFouncException::new);
-            post.decreaseLike();
-            return true;
-        }
-
-        //코멘트 관련 추천인경우 거부해야함.
-        return false;
+    public PostDetailDto getPostDetail(Long postId) {
+        PostEntity postEntity = postPort.findById(postId).orElseThrow(PostNotFouncException::new);
+        postEntity.increaseView();
+        return postFactory.buildPostDetailDto(postEntity);
     }
 
     @Override
-    @Transactional
-    public PostDetailDto getPostDetail(Long postId) {
-        PostEntity postEntity = postPort.findById(postId).orElseThrow(PostNotFouncException::new);
-        String nickname = boardUserPort.findById(postEntity.getUserId()).getNickname();
-        return new PostDetailDto(postEntity,nickname);
+    public List<PostEntity> getPostsByBoardId(Integer boardId) {
+        return postPort.findByBoardId(boardId.longValue());
     }
 }

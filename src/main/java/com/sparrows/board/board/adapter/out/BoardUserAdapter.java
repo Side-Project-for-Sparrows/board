@@ -6,6 +6,8 @@ import com.sparrows.board.board.port.out.BoardUserPort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 public class BoardUserAdapter implements BoardUserPort {
     @Autowired
@@ -21,8 +23,8 @@ public class BoardUserAdapter implements BoardUserPort {
     }
 
     @Override
-    public BoardUserEntity findById(Long userId) {
-        return boardUserRepository.findById(userId).orElseThrow();
+    public Optional<BoardUserEntity> findById(Long userId) {
+        return boardUserRepository.findById(userId);
     }
 
     @Override

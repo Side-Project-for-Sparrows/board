@@ -1,10 +1,13 @@
 package com.sparrows.board.board.adapter.out;
 
 import com.sparrows.board.board.adapter.repository.UserBoardRelationRepository;
+import com.sparrows.board.board.model.entity.BoardEntity;
 import com.sparrows.board.board.model.entity.UserBoardRelationEntity;
 import com.sparrows.board.board.port.out.UserBoardRelationPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -40,5 +43,10 @@ public class UserBoardRelationAdapter implements UserBoardRelationPort {
     @Override
     public void deleteByBoardIdAndUserId(Integer boardId, Long userId) {
         userBoardRelationRepository.deleteByBoardIdAndUserId(boardId,userId);
+    }
+
+    @Override
+    public List<BoardEntity> findByUserId(long userId) {
+        return userBoardRelationRepository.findBoardsByUserId(userId);
     }
 }

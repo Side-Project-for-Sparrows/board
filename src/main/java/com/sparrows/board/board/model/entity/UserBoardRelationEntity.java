@@ -1,6 +1,5 @@
 package com.sparrows.board.board.model.entity;
 
-import com.sparrows.board.common.model.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

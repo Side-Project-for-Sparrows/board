@@ -1,6 +1,7 @@
 package com.sparrows.board.board.port.in;
 
 import com.sparrows.board.board.model.dto.client.PostDetailDto;
+import com.sparrows.board.board.model.entity.CommentEntity;
 import com.sparrows.board.board.model.entity.PostEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,11 +15,11 @@ public interface PostUsecase {
     //유저와 연관된 모든 게시글 가져오기
     List<PostEntity> getAllPostsByUserId(long userId);
 
+    List<PostEntity> getPostsByBoardId(Integer boardId);
+
     List<PostEntity> getPostsByQuery(Integer boardId, String query);
 
     Page<PostEntity> getPosts(Pageable pageable);
-
-    boolean likePost(Long postId, Long userId);
 
     PostDetailDto getPostDetail(Long postId);
 }

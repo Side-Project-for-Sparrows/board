@@ -2,7 +2,9 @@ package com.sparrows.board.board.controller;
 
 import com.sparrows.board.board.model.dto.client.*;
 import com.sparrows.board.board.model.entity.BoardEntity;
+import com.sparrows.board.board.model.entity.PostEntity;
 import com.sparrows.board.board.port.in.BoardUsecase;
+import com.sparrows.board.board.port.in.PostUsecase;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -17,6 +20,9 @@ import java.util.List;
 public class BoardController {
     @Autowired
     BoardUsecase boardUsecase;
+
+    @Autowired
+    PostUsecase postUsecase;
 
     @PostMapping
     public ResponseEntity<BoardCreateResponseDto> createPrivateBoard(@RequestBody BoardCreateRequestDto dto){
@@ -67,4 +73,18 @@ public class BoardController {
         }
         return ResponseEntity.ok(boardSearchResponseDtos);
     }
+
+    @GetMapping("/{boardId}/posts")
+    public ResponseEntity<List<PostSummaryResponseDto>> getPostsByBoard(@PathVariable Integer boardId) {
+        List<PostEntity> posts = postUsecase.getPostsByBoardId(boardId);
+
+        // 예시: 닉네임 조회는 유저서비스 연동 필요 (간단히 placeholder로 가정)
+        List<PostSummaryResponseDto> result = posts.stream()
+                .map(post -> PostSummaryResponseDto.from(post, "익명")) // 추후 nickname 로직 연결
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(result);
+    }
+
+
 }
