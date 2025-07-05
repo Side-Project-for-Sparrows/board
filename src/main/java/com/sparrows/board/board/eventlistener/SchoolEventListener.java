@@ -29,8 +29,8 @@ public class SchoolEventListener {
     )
     @KafkaListener(topics = "${kafka.topic.school.create}", groupId = "${kafka.groupId.board}")
     public void handleUserEvent(String message) throws JsonProcessingException {
-        //String json = objectMapper.readValue(message, String.class);
-        SchoolCreatedPayload payload = objectMapper.readValue(message, SchoolCreatedPayload.class);
+        String json = objectMapper.readValue(message, String.class);
+        SchoolCreatedPayload payload = objectMapper.readValue(json, SchoolCreatedPayload.class);
 
         BoardEntity entity = new BoardEntity();
         entity.setSchoolId(payload.getSchoolId());
