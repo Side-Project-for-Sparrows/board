@@ -27,7 +27,7 @@ public class PostDatabaseAdapter implements PostPort {
     }
 
     @Override
-    public List<PostEntity> getPostsByBoardId(Long boardId) {
+    public List<PostEntity> findByBoardId(Long boardId) {
         return postRepository.findByBoardId(boardId);
     }
 

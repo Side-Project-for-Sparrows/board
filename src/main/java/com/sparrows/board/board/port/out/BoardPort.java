@@ -15,8 +15,6 @@ public interface BoardPort {
 
     Optional<BoardEntity> findById(int id);
 
-    List<BoardEntity> getAllBoardsByUserId(long id);
-
     BoardEntity updateBoardById(BoardEntity boardEntity);
     void deleteById(int id);
 

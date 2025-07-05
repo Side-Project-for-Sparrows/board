@@ -88,5 +88,8 @@ public class PostUsecaseImpl implements PostUsecase {
         return postFactory.buildPostDetailDto(postEntity);
     }
 
-
+    @Override
+    public List<PostEntity> getPostsByBoardId(Integer boardId) {
+        return postPort.findByBoardId(boardId.longValue());
+    }
 }

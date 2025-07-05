@@ -36,11 +36,6 @@ public class BoardDatabaseAdapter implements BoardPort {
     }
 
     @Override
-    public List<BoardEntity> getAllBoardsByUserId(long userId) {
-        return null;
-    }
-
-    @Override
     public BoardEntity updateBoardById(BoardEntity boardEntity) {
         return boardRepository.updateBoardById(boardEntity);
     }

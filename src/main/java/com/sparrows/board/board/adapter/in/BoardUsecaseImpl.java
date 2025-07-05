@@ -172,7 +172,7 @@ public class BoardUsecaseImpl implements BoardUsecase {
 
     @Override
     public List<BoardEntity> searchAllBoardsByUserId(long userId) {
-        return boardPort.getAllBoardsByUserId(userId);
+         return userBoardRelationPort.findByUserId(userId);
     }
 
 

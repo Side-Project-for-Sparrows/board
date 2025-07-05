@@ -15,6 +15,8 @@ public interface PostUsecase {
     //유저와 연관된 모든 게시글 가져오기
     List<PostEntity> getAllPostsByUserId(long userId);
 
+    List<PostEntity> getPostsByBoardId(Integer boardId);
+
     List<PostEntity> getPostsByQuery(Integer boardId, String query);
 
     Page<PostEntity> getPosts(Pageable pageable);

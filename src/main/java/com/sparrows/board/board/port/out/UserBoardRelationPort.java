@@ -1,6 +1,9 @@
 package com.sparrows.board.board.port.out;
 
+import com.sparrows.board.board.model.entity.BoardEntity;
 import com.sparrows.board.board.model.entity.UserBoardRelationEntity;
+
+import java.util.List;
 
 public interface UserBoardRelationPort {
     boolean isUserInBoard(Long userId, Integer boardId);
@@ -14,4 +17,6 @@ public interface UserBoardRelationPort {
     void deleteByBoardId(Integer boardId);
 
     void deleteByBoardIdAndUserId(Integer boardId, Long userId);
+
+    List<BoardEntity> findByUserId(long userId);
 }
