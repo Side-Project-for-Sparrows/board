@@ -10,25 +10,19 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 public class PostImageDetailDto {
-    Long id;
-    Long postId;
-    String url;
+    String key;
 
     public PostImageDetailDto(PostImageEntity entity){
-        this.id = entity.getId();
-        this.postId = entity.getPost().getId();
-        this.url = entity.getUrl();
+        this.key = entity.getKey();
     }
 
     public static List<PostImageDetailDto> from(List<PostImageEntity> postImageEntities) {
         List<PostImageDetailDto> dtos = new ArrayList<>();
-
         if(postImageEntities == null) return dtos;
 
         for(PostImageEntity image: postImageEntities){
             dtos.add(new PostImageDetailDto(image));
         }
-
         return dtos;
     }
 }

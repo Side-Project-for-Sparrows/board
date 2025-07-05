@@ -1,6 +1,7 @@
 package com.sparrows.board.board.port.in;
 
 import com.sparrows.board.board.model.dto.client.PostDetailDto;
+import com.sparrows.board.board.model.entity.CommentEntity;
 import com.sparrows.board.board.model.entity.PostEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,8 +18,6 @@ public interface PostUsecase {
     List<PostEntity> getPostsByQuery(Integer boardId, String query);
 
     Page<PostEntity> getPosts(Pageable pageable);
-
-    boolean likePost(Long postId, Long userId);
 
     PostDetailDto getPostDetail(Long postId);
 }

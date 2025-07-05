@@ -1,9 +1,9 @@
 package com.sparrows.board.board.adapter.in;
 
-import com.sparrows.board.board.exception.handling.AccessDeniedException;
-import com.sparrows.board.board.exception.handling.BoardNotFouncException;
-import com.sparrows.board.board.exception.handling.FailUserNotFoundException;
-import com.sparrows.board.board.exception.handling.SchoolAlreayExistException;
+import com.sparrows.board.exception.handling.AccessDeniedException;
+import com.sparrows.board.exception.handling.BoardNotFouncException;
+import com.sparrows.board.exception.handling.FailUserNotFoundException;
+import com.sparrows.board.exception.handling.SchoolAlreayExistException;
 import com.sparrows.board.board.model.dto.client.*;
 import com.sparrows.board.board.model.dto.internal.BoardSaveRequest;
 import com.sparrows.board.board.model.dto.internal.BoardSearchRequest;

@@ -1,6 +1,5 @@
 package com.sparrows.board.board.model.entity;
 
-import com.sparrows.board.common.model.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,10 +15,13 @@ import java.util.List;
 public class CommentEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(nullable = false)
-    private long userId;
+    private Long userId;
+
+    @Column
+    private Integer likeCount = 0;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
@@ -29,6 +31,14 @@ public class CommentEntity extends BaseEntity {
     private String content;
 
     @Column
-    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<LikeEntity> likes;
+
+    public void increaseLike() {
+        this.likeCount += 1;
+    }
+
+    public void decreaseLike() {
+        this.likeCount -= 1;
+    }
 }

@@ -2,7 +2,7 @@ package com.sparrows.board.board.adapter.in;
 
 import com.sparrows.board.board.cache.calendar.CalendarCacheKey;
 import com.sparrows.board.board.cache.calendar.CalendarKeyGenerator;
-import com.sparrows.board.board.exception.handling.AccessDeniedException;
+import com.sparrows.board.exception.handling.AccessDeniedException;
 import com.sparrows.board.board.model.dto.client.*;
 import com.sparrows.board.board.model.entity.CalendarEntity;
 import com.sparrows.board.board.port.in.CalendarUseCase;

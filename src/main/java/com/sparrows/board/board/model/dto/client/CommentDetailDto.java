@@ -1,6 +1,8 @@
 package com.sparrows.board.board.model.dto.client;
 
 import com.sparrows.board.board.model.entity.CommentEntity;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -8,29 +10,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@NoArgsConstructor
+@Builder
+@AllArgsConstructor
 public class CommentDetailDto {
     Long id;
     Long userId;
+    String nickname;
     String content;
-    List<LikeDetailDto> likeDetailDtos;
+    Integer likeCount;
 
     public CommentDetailDto(CommentEntity entity){
         this.id = entity.getId();
         this.userId = entity.getUserId();
         this.content = entity.getContent();
-        this.likeDetailDtos = LikeDetailDto.from(entity.getLikes());
-    }
-
-    public static List<CommentDetailDto> from(List<CommentEntity> comments) {
-        List<CommentDetailDto> dtos = new ArrayList<>();
-
-        if(comments == null) return dtos;
-
-        for(CommentEntity comment : comments){
-            dtos.add(new CommentDetailDto(comment));
-        }
-
-        return dtos;
+        this.likeCount = entity.getLikeCount();
     }
 }
