@@ -4,7 +4,6 @@ spring:
     username: ${POSTGRES_USER}
     password: ${POSTGRES_PASSWORD}
     driver-class-name: org.postgresql.Driver
-
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
@@ -13,7 +12,6 @@ spring:
     properties:
       hibernate:
         format_sql: true
-
   data:
     mongodb:
       uri: mongodb://admin:password@mongodb:27017/admin  # 서비스 이름 기반 접근
@@ -26,12 +24,6 @@ spring:
     scheduling:
       pool:
         size: 5
-  batch:
-    jdbc:
-      initialize-schema: always
-    job:
-      enabled: false
-
   kafka:
     bootstrap-servers: kafka:9092  # 내부 서비스명 기준
     admin:
@@ -40,6 +32,7 @@ spring:
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       properties:
         spring.json.trusted.packages: "*"
+      auto-offset-reset: latest
 
 TIMEZONE:
   OFFSET: 9
@@ -94,7 +87,7 @@ cache:
         redis: 2m
 
 minio:
-  endpoint: http://minio:9000
+  endpoint: http://minio-0:9000
   access-key: minioadmin
   secret-key: minioadmin
   bucket: post-files

@@ -24,11 +24,6 @@ spring:
     scheduling:
       pool:
         size: 5
-  batch:
-    jdbc:
-      initialize-schema: always  # 배치 메타 테이블 자동 생성
-    job:
-      enabled: false
   kafka:
     bootstrap-servers: 192.168.0.17:30092
     admin:
