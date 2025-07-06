@@ -87,7 +87,7 @@ cache:
         redis: 2m
 
 minio:
-  endpoint: http://minio-0:9000
+  endpoint: http://minio.default.svc.cluster.local:9000
   access-key: minioadmin
   secret-key: minioadmin
   bucket: post-files
