@@ -25,16 +25,16 @@ public class UserEventListener {
             dltTopicSuffix = ".dlt",
             autoCreateTopics = "true"
     )
-    @KafkaListener(topics = "${kafka.topic.user.create}", groupId = "${kafka.groupId.board}")
+    @KafkaListener(topics = "${kafka.topic.user.create}")
     public void handleUserEvent(String message) throws JsonProcessingException {
-        String json = objectMapper.readValue(message, String.class);
+        //String json = objectMapper.readValue(message, String.class);
 
-        UserCreatedPayload createdPayload = objectMapper.readValue(json, UserCreatedPayload.class);
+        UserCreatedPayload createdPayload = objectMapper.readValue(message, UserCreatedPayload.class);
         log.info("user created payload: {}", createdPayload);
         handleUserCreated(createdPayload);
     }
 
-    @KafkaListener(topics = "${kafka.topic.user.create}.dlt", groupId = "${kafka.groupId.board}")
+    @KafkaListener(topics = "${kafka.topic.user.create}.dlt")
     public void handleDlt(String message) {
         // 저장, 알림, 재처리 로직 등
         log.error("DLT 메시지 수신: {}", message);

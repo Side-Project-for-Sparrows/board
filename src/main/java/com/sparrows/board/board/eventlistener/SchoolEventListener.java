@@ -27,10 +27,9 @@ public class SchoolEventListener {
             dltTopicSuffix = ".dlt",
             autoCreateTopics = "true"
     )
-    @KafkaListener(topics = "${kafka.topic.school.create}", groupId = "${kafka.groupId.board}")
-    public void handleUserEvent(String message) throws JsonProcessingException {
-        String json = objectMapper.readValue(message, String.class);
-        SchoolCreatedPayload payload = objectMapper.readValue(json, SchoolCreatedPayload.class);
+    @KafkaListener(topics = "${kafka.topic.school.create}")
+    public void handleSchoolEvent(String message) throws JsonProcessingException {
+        SchoolCreatedPayload payload = objectMapper.readValue(message, SchoolCreatedPayload.class);
 
         BoardEntity entity = new BoardEntity();
         entity.setSchoolId(payload.getSchoolId());
