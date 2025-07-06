@@ -27,8 +27,6 @@ public class UserEventListener {
     )
     @KafkaListener(topics = "${kafka.topic.user.create}")
     public void handleUserEvent(String message) throws JsonProcessingException {
-        //String json = objectMapper.readValue(message, String.class);
-
         UserCreatedPayload createdPayload = objectMapper.readValue(message, UserCreatedPayload.class);
         log.info("user created payload: {}", createdPayload);
         handleUserCreated(createdPayload);

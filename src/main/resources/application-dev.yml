@@ -29,10 +29,8 @@ spring:
     admin:
       auto-create: true
     consumer:
-      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       properties:
         spring.json.trusted.packages: "*"
-      auto-offset-reset: latest
 
 TIMEZONE:
   OFFSET: 9
@@ -67,7 +65,7 @@ kafka:
       delete: "school-delete-event"
 
   groupId:
-    board: "board-group-kwan"
+    board: "board-group-kwan-test22-temp-sdfklsdjfklsdjflksjf"
     school: "school-group-kwan"
     search: "search-group-kwan"
 

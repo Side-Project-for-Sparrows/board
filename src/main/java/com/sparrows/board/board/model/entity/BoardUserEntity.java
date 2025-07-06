@@ -1,9 +1,6 @@
 package com.sparrows.board.board.model.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,7 +11,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "board_user_cqrs")
+@Table(name = "board_user_cqrs",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"school_id", "user_id"})
+        }
+)
 public class BoardUserEntity {
     @Id
     private Long id;
