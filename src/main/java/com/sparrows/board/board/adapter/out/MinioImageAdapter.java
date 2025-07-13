@@ -6,7 +6,6 @@ import com.sparrows.board.board.model.entity.PostImageEntity;
 import com.sparrows.board.board.port.out.ImagePort;
 import com.sparrows.board.minio.service.MinioStorageService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,6 +19,8 @@ public class MinioImageAdapter implements ImagePort {
 
     @Override
     public PostImageEntity save(PostEntity post, MultipartFile[] multipartFiles) throws IOException{
+        if(multipartFiles == null) return null;
+
         int order = 0;
         for(MultipartFile file: multipartFiles){
             String key = PostImageEntity.createKey(post,order++);
