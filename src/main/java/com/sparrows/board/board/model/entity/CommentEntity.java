@@ -20,8 +20,8 @@ public class CommentEntity extends BaseEntity {
     @Column(nullable = false)
     private Long userId;
 
-    @Column
-    private Integer likeCount = 0;
+    @Column(nullable = false)
+    private int likeCount = 0;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")

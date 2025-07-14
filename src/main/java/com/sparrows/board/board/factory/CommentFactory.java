@@ -1,11 +1,12 @@
 package com.sparrows.board.board.factory;
 
-import com.sparrows.board.exception.handling.BoardUserNotFoundException;
 import com.sparrows.board.board.model.dto.client.CommentDetailDto;
 import com.sparrows.board.board.model.entity.BoardUserEntity;
 import com.sparrows.board.board.model.entity.CommentEntity;
 import com.sparrows.board.board.port.out.BoardUserPort;
+import com.sparrows.board.exception.handling.BoardUserNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -33,5 +34,21 @@ public class CommentFactory {
         }
 
         return dtos;
+    }
+
+    public Page<CommentDetailDto> buildCommentDetailDtos(Page<CommentEntity> comments) {
+        List<CommentDetailDto> dtos = new ArrayList<>();
+
+        return comments.map(entity -> {
+            BoardUserEntity user = boardUserPort.findById(entity.getUserId()).orElseThrow(BoardUserNotFoundException::new);
+
+            return CommentDetailDto.builder()
+                    .id(entity.getId())
+                    .userId(user.getId())
+                    .nickname(user.getNickname())
+                    .content(entity.getContent())
+                    .likeCount(entity.getLikeCount())
+                    .build();
+        });
     }
 }

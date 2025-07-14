@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class PostFactory {
     private final BoardUserPort boardUserPort;
-    private final CommentFactory commentFactory;
 
     public PostDetailDto buildPostDetailDto(PostEntity post){
         BoardUserEntity user = boardUserPort.findById(post.getUserId()).orElseThrow(() -> new BoardUserNotFoundException());
@@ -27,7 +26,6 @@ public class PostFactory {
                 .commentCount(post.getCommentCount())
                 .viewCount(post.getViewCount())
                 .postImageDetailDtos(PostImageDetailDto.from(post.getPostImageEntities()))
-                .commentDetailDtos(commentFactory.buildCommentDetailDtos(post.getComments()))
                 .createdAt(post.getCreatedAt())
                 .writerId(post.getUserId())
                 .nickname(user.getNickname())
