@@ -28,7 +28,6 @@ public class CommentController {
 
     @GetMapping("/{postId}")
     public ResponseEntity<Page<CommentDetailDto>> getCommentsByPostId(
-            @RequestHeader("X-Requester-Id") Long requesterId,
             @PathVariable(name="postId") Long postId,
             @RequestParam(name="page") Integer page
             ) {
