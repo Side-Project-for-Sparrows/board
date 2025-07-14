@@ -4,9 +4,9 @@ import lombok.Data;
 
 @Data
 public class CommentCreateResponseDto {
-    String result;
+    boolean success;
 
     public CommentCreateResponseDto(Boolean isSuccess) {
-        this.result = isSuccess ? "SUCCESS" : "FAIL";
+        this.success = isSuccess;
     }
 }
