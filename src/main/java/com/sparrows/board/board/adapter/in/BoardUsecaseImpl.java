@@ -1,9 +1,6 @@
 package com.sparrows.board.board.adapter.in;
 
-import com.sparrows.board.exception.handling.AccessDeniedException;
-import com.sparrows.board.exception.handling.BoardNotFouncException;
-import com.sparrows.board.exception.handling.FailUserNotFoundException;
-import com.sparrows.board.exception.handling.SchoolAlreayExistException;
+import com.sparrows.board.board.factory.BoardFactory;
 import com.sparrows.board.board.model.dto.client.*;
 import com.sparrows.board.board.model.dto.internal.BoardSaveRequest;
 import com.sparrows.board.board.model.dto.internal.BoardSearchRequest;
@@ -12,6 +9,7 @@ import com.sparrows.board.board.model.entity.BoardEntity;
 import com.sparrows.board.board.model.entity.UserBoardRelationEntity;
 import com.sparrows.board.board.port.in.BoardUsecase;
 import com.sparrows.board.board.port.out.*;
+import com.sparrows.board.exception.handling.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +26,7 @@ public class BoardUsecaseImpl implements BoardUsecase {
     private final BoardUserPort boardUserPort;
     private final BoardSearchPort boardSearchPort;
     private final UserBoardRelationPort userBoardRelationPort;
+    private final BoardFactory boardFactory;
 
     @Override
     @Transactional
@@ -87,18 +86,6 @@ public class BoardUsecaseImpl implements BoardUsecase {
 
     @Override
     @Transactional
-    public BoardDeleteResponseDto deleteBoard(Long userId, Integer boardId) {
-        UserBoardRelationEntity relationEntity = userBoardRelationPort.findByUserIdAndBoardId(userId, boardId);
-        if(relationEntity == null) throw  new BoardNotFouncException();
-        if(!BoardAuthority.BOSS.equals(relationEntity.getBoardAuthority())) throw new AccessDeniedException();
-
-        userBoardRelationPort.deleteByBoardId(boardId);
-        boardPort.deleteById(boardId);
-        return new BoardDeleteResponseDto(true);
-    }
-
-    @Override
-    @Transactional
     public BoardWithdrawResponseDto withdrawBoard(Integer boardId, Long userId, Long transferToUserId) {
         // 1. 유저가 해당 보드에 참여 중인지 확인
         UserBoardRelationEntity currentRelation = userBoardRelationPort.findByUserIdAndBoardId(userId, boardId);
@@ -112,15 +99,23 @@ public class BoardUsecaseImpl implements BoardUsecase {
         }
 
         // 2. 보스인 경우 양도 유저 확인
+        List<UserBoardRelationEntity> userBoardRelationEntities = userBoardRelationPort.findUsersByBoardId(boardId);
+
+        //보스 한명만 있는경우 게시판까지 삭제
+        if(userBoardRelationEntities.size() == 1){
+            userBoardRelationPort.deleteByBoardIdAndUserId(boardId,userId);
+            boardPort.deleteById(boardId);
+            return new BoardWithdrawResponseDto(true);
+        }
+
         if (transferToUserId == null) throw new IllegalArgumentException("보스는 탈퇴 시 권한을 다른 유저에게 양도해야 합니다.");
         UserBoardRelationEntity transferTarget = userBoardRelationPort.findByUserIdAndBoardId(transferToUserId, boardId);
 
-        if (transferTarget == null) throw new BoardNotFouncException();
+        if (transferTarget == null) throw new BoardUserNotFoundException();
 
         // 3. 양도 대상에게 권한 넘김
         transferTarget.setBoardAuthority(BoardAuthority.BOSS);
         userBoardRelationPort.save(transferTarget);
-
 
         // 4. 현재 유저는 게시판에서 탈퇴 (삭제 또는 권한 제거)
         userBoardRelationPort.deleteByBoardIdAndUserId(boardId,userId);
@@ -132,8 +127,25 @@ public class BoardUsecaseImpl implements BoardUsecase {
         BoardEntity realBoard = boardPort.findById(board.getId()).orElseThrow(BoardNotFouncException::new);
         if(!realBoard.getIsPublic() && !realBoard.getEnterCode().equals(board.getEnterCode())) throw new AccessDeniedException();
 
+        UserBoardRelationEntity entity = userBoardRelationPort.findByUserIdAndBoardId(userId,board.getId());
+        if(entity != null) throw new UserAlreadyJoinedException();
+
         setUserBoardRelation(userId,realBoard,BoardAuthority.CITIZEN);
         return new BoardJoinResponseDto(true);
+    }
+
+    @Override
+    public BoardMemberResponseDto getMembers(Long userId, Integer boardId) {
+        //userId가 boss일때만 허용해야함
+        validateIfRequesterisBoss(userId, boardId);
+
+        return  boardFactory.buildBoardMember(userId,boardId);
+    }
+
+    private void validateIfRequesterisBoss(Long userId, Integer boardId) {
+        UserBoardRelationEntity entity = userBoardRelationPort.findByUserIdAndBoardId(userId,boardId);
+        if(entity == null) throw new BoardUserNotFoundException();
+        if(!BoardAuthority.BOSS.equals(entity.getBoardAuthority())) throw new AccessDeniedException();
     }
 
     public void setUserBoardRelation(Long userId, Integer boardId, Integer schoolId, BoardAuthority authority) {
@@ -171,8 +183,15 @@ public class BoardUsecaseImpl implements BoardUsecase {
     }
 
     @Override
-    public List<BoardEntity> searchAllBoardsByUserId(long userId) {
-         return userBoardRelationPort.findByUserId(userId);
+    public List<BoardSearchResponseDto> searchAllBoardsByUserId(Long userId) {
+         List<BoardEntity> boardEntities = userBoardRelationPort.findByUserId(userId);
+
+        List<BoardSearchResponseDto> boardSearchResponseDtos = new ArrayList<>();
+        for(BoardEntity entity: boardEntities){
+            boardSearchResponseDtos.add(boardFactory.buildBoardSearchResponse(userId, entity.getId()));
+        }
+
+        return boardSearchResponseDtos;
     }
 
 
@@ -182,7 +201,7 @@ public class BoardUsecaseImpl implements BoardUsecase {
     }
 
     @Override
-    public List<BoardEntity> searchBoardByQuery(String query) {
+    public List<BoardSearchResponseDto> searchBoardByQuery(Long userId, String query) {
         List<Long> boardIds = boardSearchPort.search(BoardSearchRequest.from(query)).getIds();
 
         List<BoardEntity> boards = new ArrayList<>();
@@ -192,6 +211,11 @@ public class BoardUsecaseImpl implements BoardUsecase {
             boards.add(board.get());
         }
 
-        return boards;
+        List<BoardSearchResponseDto> boardSearchResponseDtos = new ArrayList<>();
+        for(BoardEntity entity: boards){
+            boardSearchResponseDtos.add(boardFactory.buildBoardSearchResponse(userId, entity.getId()));
+        }
+
+        return boardSearchResponseDtos;
     }
 }

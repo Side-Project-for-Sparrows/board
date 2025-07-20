@@ -49,4 +49,9 @@ public class UserBoardRelationAdapter implements UserBoardRelationPort {
     public List<BoardEntity> findByUserId(long userId) {
         return userBoardRelationRepository.findBoardsByUserId(userId);
     }
+
+    @Override
+    public List<UserBoardRelationEntity> findUsersByBoardId(Integer boardId) {
+        return userBoardRelationRepository.findByBoardId(boardId);
+    }
 }
