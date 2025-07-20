@@ -23,4 +23,6 @@ public interface UserBoardRelationRepository extends JpaRepository<UserBoardRela
     void deleteByBoardIdAndUserId(Integer boardId,Long userId);
 
     List<UserBoardRelationEntity> findByUserId(long userId);
+
+    List<UserBoardRelationEntity> findByBoardId(Integer boardId);
 }

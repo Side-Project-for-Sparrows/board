@@ -19,4 +19,6 @@ public interface UserBoardRelationPort {
     void deleteByBoardIdAndUserId(Integer boardId, Long userId);
 
     List<BoardEntity> findByUserId(long userId);
+
+    List<UserBoardRelationEntity> findUsersByBoardId(Integer boardId);
 }

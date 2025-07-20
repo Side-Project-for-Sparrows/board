@@ -7,6 +7,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class BoardWithdrawRequestDto {
     private Integer boardId;
-    private Long userId;
     private Long transferToUserId;
 }
