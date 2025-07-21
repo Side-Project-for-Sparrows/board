@@ -34,7 +34,7 @@ public class BoardFactory {
         return dto;
     }
 
-    public BoardSearchResponseDto buildBoardSearchResponse(Long userId, Integer boardId){
+    public BoardSearchResponseDto buildRelatedBoardSearchResponse(Long userId, Integer boardId){
 
         UserBoardRelationEntity userboard = userBoardRelationPort.findByUserIdAndBoardId(userId,boardId);
         BoardEntity board = userboard.getBoard();
@@ -47,6 +47,20 @@ public class BoardFactory {
                     .isBoss(BoardAuthority.BOSS.equals(userboard.getBoardAuthority()))
                     .isPublic(board.getIsPublic())
                     .build();
+
+    }
+
+    public BoardSearchResponseDto buildBoardSearchResponse(Integer boardId){
+        BoardEntity board = boardPort.findById(boardId).orElseThrow();
+
+        return BoardSearchResponseDto.builder()
+                .boardId(board.getId())
+                .schoolId(board.getSchoolId())
+                .name(board.getName())
+                .description(board.getDescription())
+                .isBoss(false)
+                .isPublic(board.getIsPublic())
+                .build();
 
     }
 }
