@@ -11,7 +11,7 @@ public interface BoardUsecase {
     List<BoardSearchResponseDto> searchAllBoardsByUserId(Long userId);
     BoardEntity update(BoardEntity boardEntity);
     void delete(int id);
-    List<BoardSearchResponseDto> searchBoardByQuery(Long userId, String query);
+    List<BoardSearchResponseDto> searchBoardByQuery(String query);
     BoardUpdateResponseDto validateAndUpdateBoard(Long userId, BoardEntity convert);
     BoardWithdrawResponseDto withdrawBoard(Integer boardId, Long userId, Long transferToUserId);
     BoardJoinResponseDto join(Long userId, BoardEntity board);

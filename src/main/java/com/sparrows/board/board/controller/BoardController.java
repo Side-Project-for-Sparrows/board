@@ -38,8 +38,8 @@ public class BoardController {
     }
 
     @PostMapping("/join")
-    public ResponseEntity<BoardJoinResponseDto> join(@RequestBody BoardJoinRequestDto dto){
-        return ResponseEntity.ok(boardUsecase.join(dto.getUserId(), dto.to()));
+    public ResponseEntity<BoardJoinResponseDto> join(@RequestHeader("X-Requester-Id") Long userId, @RequestBody BoardJoinRequestDto dto){
+        return ResponseEntity.ok(boardUsecase.join(userId, dto.to()));
     }
 
 
@@ -53,7 +53,7 @@ public class BoardController {
     // 2. 검색어(query)로 게시판 목록 조회 (Elasticsearch 기반)
     @GetMapping("/search")
     public ResponseEntity<List<BoardSearchResponseDto>> searchBoards(@RequestHeader("X-Requester-Id") Long userId, @RequestParam String query) {
-        List<BoardSearchResponseDto> boardEntities = boardUsecase.searchBoardByQuery(userId, query);
+        List<BoardSearchResponseDto> boardEntities = boardUsecase.searchBoardByQuery(query);
 
         return ResponseEntity.ok(boardEntities);
     }

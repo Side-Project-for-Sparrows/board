@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class BoardJoinRequestDto {
     private Integer boardId;
-    private Long userId;
     private String enterCode;
 
     public BoardEntity to(){

@@ -188,7 +188,7 @@ public class BoardUsecaseImpl implements BoardUsecase {
 
         List<BoardSearchResponseDto> boardSearchResponseDtos = new ArrayList<>();
         for(BoardEntity entity: boardEntities){
-            boardSearchResponseDtos.add(boardFactory.buildBoardSearchResponse(userId, entity.getId()));
+            boardSearchResponseDtos.add(boardFactory.buildRelatedBoardSearchResponse(userId, entity.getId()));
         }
 
         return boardSearchResponseDtos;
@@ -201,7 +201,7 @@ public class BoardUsecaseImpl implements BoardUsecase {
     }
 
     @Override
-    public List<BoardSearchResponseDto> searchBoardByQuery(Long userId, String query) {
+    public List<BoardSearchResponseDto> searchBoardByQuery(String query) {
         List<Long> boardIds = boardSearchPort.search(BoardSearchRequest.from(query)).getIds();
 
         List<BoardEntity> boards = new ArrayList<>();
@@ -213,7 +213,7 @@ public class BoardUsecaseImpl implements BoardUsecase {
 
         List<BoardSearchResponseDto> boardSearchResponseDtos = new ArrayList<>();
         for(BoardEntity entity: boards){
-            boardSearchResponseDtos.add(boardFactory.buildBoardSearchResponse(userId, entity.getId()));
+            boardSearchResponseDtos.add(boardFactory.buildBoardSearchResponse(entity.getId()));
         }
 
         return boardSearchResponseDtos;
