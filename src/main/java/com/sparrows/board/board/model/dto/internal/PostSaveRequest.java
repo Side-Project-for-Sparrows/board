@@ -16,6 +16,6 @@ public class PostSaveRequest {
     String content;
 
     public static PostSaveRequest from(PostEntity entity){
-        return new PostSaveRequest(entity.getId(), entity.getBoardId(), entity.getUserId(), entity.getTitle(), entity.getContent());
+        return new PostSaveRequest(entity.getId(), entity.getBoard().getId(), entity.getUser().getId(), entity.getTitle(), entity.getContent());
     }
 }

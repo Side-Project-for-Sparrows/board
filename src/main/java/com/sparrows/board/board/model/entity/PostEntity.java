@@ -39,11 +39,13 @@ public class PostEntity extends BaseEntity {
     @Column(nullable = false)
     private boolean isHidden;
 
-    @Column(nullable = false)
-    private int boardId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "board_id", nullable = false)
+    private BoardEntity board;
 
-    @Column(nullable = false)
-    private long userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private BoardUserEntity user;
 
     @Column(unique = true)
     private String url; // slug

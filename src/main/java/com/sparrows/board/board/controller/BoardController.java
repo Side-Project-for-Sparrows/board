@@ -63,7 +63,7 @@ public class BoardController {
         List<PostEntity> posts = postUsecase.getPostsByBoardId(boardId);
 
         List<PostSummaryResponseDto> result = posts.stream()
-                .map(post -> PostSummaryResponseDto.from(post, "익명")) // 추후 nickname 로직 연결
+                .map(post -> PostSummaryResponseDto.from(post)) // 추후 nickname 로직 연결
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(result);

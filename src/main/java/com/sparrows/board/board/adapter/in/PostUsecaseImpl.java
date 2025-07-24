@@ -1,11 +1,11 @@
 package com.sparrows.board.board.adapter.in;
 
 import com.sparrows.board.board.factory.PostFactory;
+import com.sparrows.board.board.model.dto.client.PostCreateRequestDto;
 import com.sparrows.board.board.model.dto.client.PostDetailDto;
 import com.sparrows.board.board.model.dto.internal.PostSaveRequest;
 import com.sparrows.board.board.model.dto.internal.PostSearchRequest;
 import com.sparrows.board.board.model.entity.PostEntity;
-import com.sparrows.board.board.model.entity.PostImageEntity;
 import com.sparrows.board.board.model.entity.UserBoardRelationEntity;
 import com.sparrows.board.board.port.in.PostUsecase;
 import com.sparrows.board.board.port.out.*;
@@ -19,9 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 @Slf4j
@@ -37,7 +34,9 @@ public class PostUsecaseImpl implements PostUsecase {
 
     @Transactional
     @Override
-    public boolean savePost(PostEntity post, MultipartFile[] images) throws Exception {
+    public boolean savePost(PostCreateRequestDto requestDto, MultipartFile[] images) throws Exception {
+        PostEntity post = postFactory.buildPost(requestDto);
+
         //post 저장 시도하려는 유저가 해당 board에 존재하는지 검증 필요
         isValid(post);
 
@@ -54,8 +53,8 @@ public class PostUsecaseImpl implements PostUsecase {
     }
 
     private void isValid(PostEntity post) throws BoardNotFouncException {
-        Long userId = post.getUserId();
-        Integer boardId = post.getBoardId();
+        Long userId = post.getUser().getId();
+        Integer boardId = post.getBoard().getId();
 
         UserBoardRelationEntity userBoardRelationEntity = userBoardRelationPort.findByUserIdAndBoardId(userId,boardId);
         if(userBoardRelationEntity == null) throw new BoardNotFouncException();

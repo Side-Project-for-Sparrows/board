@@ -26,9 +26,9 @@ public class PostSearchResponseDto {
 
     public static PostSearchResponseDto from(PostEntity post){
         return PostSearchResponseDto.builder()
-                .userId(post.getUserId())
+                .userId(post.getUser().getId())
                 .postId(post.getId())
-                .boardId(post.getBoardId())
+                .boardId(post.getBoard().getId())
                 .title(post.getTitle())
                 .content(post.getContent())
                 .imageUrls(post.getPostImageEntities().stream()

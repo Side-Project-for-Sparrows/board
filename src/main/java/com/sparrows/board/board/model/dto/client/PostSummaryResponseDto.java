@@ -21,11 +21,11 @@ public class PostSummaryResponseDto {
     private Integer viewCount;
     private LocalDateTime createdAt;
 
-    public static PostSummaryResponseDto from(PostEntity entity, String nickname) {
+    public static PostSummaryResponseDto from(PostEntity entity) {
         return PostSummaryResponseDto.builder()
                 .postId(entity.getId())
                 .title(entity.getTitle())
-                .nickname(nickname) // UserService 통해 얻거나, entity.getUser().getNickname() 등
+                .nickname(entity.getUser().getNickname()) // UserService 통해 얻거나, entity.getUser().getNickname() 등
                 .likeCount(entity.getLikeCount())
                 .commentCount(entity.getCommentCount())
                 .viewCount(entity.getViewCount())

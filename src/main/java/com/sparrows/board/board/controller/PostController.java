@@ -1,16 +1,14 @@
 package com.sparrows.board.board.controller;
 
-import com.sparrows.board.board.model.dto.client.*;
+import com.sparrows.board.board.model.dto.client.PostCreateRequestDto;
+import com.sparrows.board.board.model.dto.client.PostCreateResponseDto;
+import com.sparrows.board.board.model.dto.client.PostDetailDto;
+import com.sparrows.board.board.model.dto.client.PostSearchResponseDto;
 import com.sparrows.board.board.model.dto.internal.PostSearchRequest;
 import com.sparrows.board.board.model.entity.PostEntity;
-import com.sparrows.board.board.model.entity.PostImageEntity;
 import com.sparrows.board.board.port.in.PostUsecase;
-import com.sparrows.board.minio.service.MinioStorageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -19,9 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,7 +69,7 @@ public class PostController {
     public ResponseEntity<PostCreateResponseDto> createPost(
             @RequestPart("post") PostCreateRequestDto postCreateRequestDto,
             @RequestPart(value = "image", required = false) MultipartFile[] images) throws Exception {
-        boolean result = postUsecase.savePost(postCreateRequestDto.to(), images);
+        boolean result = postUsecase.savePost(postCreateRequestDto, images);
         return ResponseEntity.status(HttpStatus.CREATED).body(new PostCreateResponseDto(result));
     }
 
