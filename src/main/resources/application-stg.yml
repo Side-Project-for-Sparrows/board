@@ -39,7 +39,7 @@ TIMEZONE:
 
 search:
   service:
-    url: http://search-service:8080  # 내부 서비스 접근 방식
+    url: http://search:8080  # 내부 서비스 접근 방식
 
 kafka:
   aggregateType:
